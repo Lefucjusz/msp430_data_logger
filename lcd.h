@@ -32,7 +32,7 @@ void lcd_cls(void); //Clear LCD
 void lcd_init(void); //Initialize LCD_A
 void lcd_show_all(void); //Display all segments on LCD
 
-void lcd_putchar(uint8_t pos, uint8_t index); //Display character on LCD
+void lcd_putchar(uint8_t, uint8_t); //Display character on LCD
 
 #define LCD_PWR_LVL_0   0x01
 #define LCD_PWR_LVL_1   0x02
@@ -42,7 +42,7 @@ void lcd_putchar(uint8_t pos, uint8_t index); //Display character on LCD
 #define LCD_PWR_LVL_5   0x20
 #define LCD_PWR_OFF     0x40
 
-void lcd_power_level(uint8_t lvl); //Display power level on LCD
+void lcd_power_level(uint8_t); //Display power level on LCD
 
 #define LCD_F1          0x01
 #define LCD_F2          0x02
@@ -51,7 +51,7 @@ void lcd_power_level(uint8_t lvl); //Display power level on LCD
 #define LCD_F5          0x10
 #define LCD_FUNC_OFF    0x20
 
-void lcd_function(uint8_t mask); //Display function F1 thru F5 on LCD
+void lcd_function(uint8_t); //Display function F1 thru F5 on LCD
 
 // Display Battery Level
 #define LCD_BATT_LOW    0x01
@@ -59,7 +59,7 @@ void lcd_function(uint8_t mask); //Display function F1 thru F5 on LCD
 #define LCD_BATT_FULL   0x04
 #define LCD_BATT_OFF    0x08
 
-void lcd_battery_level(uint8_t lvl); //Display battery level on LCD
+void lcd_battery_level(uint8_t); //Display battery level on LCD
 
 #define LCD_SIG_LVL_0   0x01
 #define LCD_SIG_LVL_1   0x02
@@ -67,7 +67,7 @@ void lcd_battery_level(uint8_t lvl); //Display battery level on LCD
 #define LCD_SIG_LVL_3   0x08
 #define LCD_SIG_OFF     0x10
 
-void lcd_signal_level(uint8_t lvl); //Display signal level on LCD
+void lcd_signal_level(uint8_t); //Display signal level on LCD
 
 #define LCD_ARROW_UP     0x01
 #define LCD_ARROW_RIGHT  0x02
@@ -75,7 +75,7 @@ void lcd_signal_level(uint8_t lvl); //Display signal level on LCD
 #define LCD_ARROW_LEFT   0x08
 #define LCD_ARROW_OFF    0x10
 
-void lcd_arrow(uint8_t mask); //Display arrow on LCD
+void lcd_arrow(uint8_t); //Display arrow on LCD
 
 #define LCD_SYM_DOL      0x01
 #define LCD_SYM_ERR      0x02
@@ -86,7 +86,7 @@ void lcd_arrow(uint8_t mask); //Display arrow on LCD
 #define LCD_SYM_RX       0x40
 #define LCD_SYM_OFF      0x80
 
-void lcd_symbol(uint8_t mask); //Display symbol on LCD
+void lcd_symbol(uint8_t); //Display symbol on LCD
 
 #define LCD_DP7          0x0001
 #define LCD_DP6          0x0002
@@ -98,6 +98,6 @@ void lcd_symbol(uint8_t mask); //Display symbol on LCD
 #define LCD_8BC          0x0080
 #define LCD_SPC_CHAR_OFF 0x0100
 
-void lcd_special_char(uint16_t mask); //Display special character on LCD
+void lcd_special_char(uint16_t); //Display special character on LCD
 
 #endif /* LCD_H_ */

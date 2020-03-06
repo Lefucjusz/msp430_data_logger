@@ -12,6 +12,7 @@ main.obj: ../dht11.h
 main.obj: ../uart.h
 main.obj: ../lcd.h
 main.obj: C:/ti/ccsv6/ccs_base/msp430/include/msp430xG46x.h
+main.obj: ../timer.h
 
 ../main.c: 
 C:/ti/ccsv6/ccs_base/msp430/include/msp430.h: 
@@ -25,3 +26,4 @@ C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/stdint.h:
 ../uart.h: 
 ../lcd.h: 
 C:/ti/ccsv6/ccs_base/msp430/include/msp430xG46x.h: 
+../timer.h: 

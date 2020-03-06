@@ -5,6 +5,17 @@
 #include "dht11.h"
 #include "uart.h"
 #include "lcd.h"
+#include "timer.h"
+
+/*
+ *
+ *
+ * TODO - real time clock for datagrams timestamps
+ * TODO - IMU library, I2C library
+ *
+ */
+
+volatile uint8_t timer_flag = 0;
 
 void set_mclk_8mhz(void)
 {
@@ -16,45 +27,68 @@ void set_mclk_8mhz(void)
 	__enable_interrupt(); //Enable interrupts
 }
 
-dht11_t values;
+void led_init(void)
+{
+	P5DIR |= 0x02;
+}
 
-uint8_t i, j;
+void timer_callback(void)
+{
+	P5OUT ^= 0x02;
+	timer_flag = 1;
+}
 
 void main(void)
 {
+	dht11_t values;
+	uint8_t state = 0;
+
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	set_mclk_8mhz();
-	usart1_init_9600();
 
+	usart1_init_9600();
 	lcd_init();
+	led_init();
+	timer_init(&timer_callback);
 
 	lcd_putchar(5, 20);
 
     while(1)
     {
-    	values = dht11_get_measurements();
+    	if(timer_flag)
+    	{
+    		timer_flag = 0;
+    		values = dht11_get_measurements();
 
-    	usart1_putchar(values.temperature/10 + 0x30);
-    	usart1_putchar(values.temperature%10 + 0x30);
-    	usart1_string("°C");
+			usart1_putchar(values.temperature/10 + 0x30);
+			usart1_putchar(values.temperature%10 + 0x30);
+			usart1_string("°C");
 
-    	usart1_string(" ");
+			usart1_string(" ");
 
-    	usart1_putchar(values.humidity/10 + 0x30);
-    	usart1_putchar(values.humidity%10 + 0x30);
-    	//usart1_send_char('\n');
-    	usart1_string("%\n");
+			usart1_putchar(values.humidity/10 + 0x30);
+			usart1_putchar(values.humidity%10 + 0x30);
+			//usart1_send_char('\n');
+			usart1_string("%\n");
 
-    	lcd_putchar(3, values.temperature/10);
-    	lcd_putchar(4, values.temperature%10);
-    	lcd_putchar(6, 11); //C
+			if(state == 0)
+			{
+				lcd_putchar(3, values.temperature/10);
+				lcd_putchar(4, values.temperature%10);
+				lcd_putchar(6, 11); //C
+			}
+			else if(state == 2)
+			{
+				lcd_putchar(3, values.humidity/10);
+				lcd_putchar(4, values.humidity%10);
+				lcd_putchar(6, 15); //H
+			}
 
-    	__delay_cycles(DELAY_1S);
-
-    	lcd_putchar(3, values.humidity/10);
-    	lcd_putchar(4, values.humidity%10);
-    	lcd_putchar(6, 15); //H
-
-    	__delay_cycles(DELAY_1S);
+			state++;
+			if(state >= 4)
+			{
+				state = 0;
+			}
+    	}
     }
 }

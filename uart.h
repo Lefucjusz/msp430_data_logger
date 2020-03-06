@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 void usart1_init_9600(void);
-void usart1_putchar(uint8_t byte);
-void usart1_string(const char* str);
+void usart1_putchar(uint8_t);
+void usart1_string(const char*);
 
 #endif /* UART_H_ */
