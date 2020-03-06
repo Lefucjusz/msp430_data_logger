@@ -11,7 +11,9 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./dht11.obj" \
+"./lcd.obj" \
 "./main.obj" \
+"./uart.obj" \
 "../lnk_msp430fg4618.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -153,8 +155,8 @@ msp430_data_logger.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "dht11.d" "main.d" 
-	-$(RM) "dht11.obj" "main.obj" 
+	-$(RM) "dht11.d" "lcd.d" "main.d" "uart.d" 
+	-$(RM) "dht11.obj" "lcd.obj" "main.obj" "uart.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

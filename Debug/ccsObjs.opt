@@ -1,1 +1,1 @@
-"./dht11.obj" "./main.obj" "../lnk_msp430fg4618.cmd" -llibc.a 
+"./dht11.obj" "./lcd.obj" "./main.obj" "./uart.obj" "../lnk_msp430fg4618.cmd" -llibc.a 

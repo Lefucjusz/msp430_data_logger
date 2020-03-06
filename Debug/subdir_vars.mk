@@ -8,26 +8,38 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../dht11.c \
-../main.c 
+../lcd.c \
+../main.c \
+../uart.c 
 
 OBJS += \
 ./dht11.obj \
-./main.obj 
+./lcd.obj \
+./main.obj \
+./uart.obj 
 
 C_DEPS += \
 ./dht11.d \
-./main.d 
+./lcd.d \
+./main.d \
+./uart.d 
 
 C_DEPS__QUOTED += \
 "dht11.d" \
-"main.d" 
+"lcd.d" \
+"main.d" \
+"uart.d" 
 
 OBJS__QUOTED += \
 "dht11.obj" \
-"main.obj" 
+"lcd.obj" \
+"main.obj" \
+"uart.obj" 
 
 C_SRCS__QUOTED += \
 "../dht11.c" \
-"../main.c" 
+"../lcd.c" \
+"../main.c" \
+"../uart.c" 
 
 
