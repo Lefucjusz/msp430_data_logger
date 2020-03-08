@@ -21,7 +21,7 @@ void usart1_init_9600(void)
 	IE2 |= URXIE1;                            // Enable USART1 RX interrupt
 }
 
-void usart1_putchar(uint8_t byte)
+void usart1_putchar(char byte)
 {
 	TXBUF1 = byte; //Load byte to be sent to buffer
 	while (!(IFG2 & UTXIFG1)); //Wait for transmission to complete

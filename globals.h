@@ -2,7 +2,7 @@
  * globals.h
  *
  *  Created on: 5 mar 2020
- *      Author: Samsung
+ *      Author: Lefucjusz
  */
 
 #ifndef GLOBALS_H_

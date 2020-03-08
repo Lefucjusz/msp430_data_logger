@@ -11,6 +11,8 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./dht11.obj" \
+"./i2c.obj" \
+"./l3gd20h.obj" \
 "./lcd.obj" \
 "./main.obj" \
 "./timer.obj" \
@@ -156,8 +158,8 @@ msp430_data_logger.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "dht11.d" "lcd.d" "main.d" "timer.d" "uart.d" 
-	-$(RM) "dht11.obj" "lcd.obj" "main.obj" "timer.obj" "uart.obj" 
+	-$(RM) "dht11.d" "i2c.d" "l3gd20h.d" "lcd.d" "main.d" "timer.d" "uart.d" 
+	-$(RM) "dht11.obj" "i2c.obj" "l3gd20h.obj" "lcd.obj" "main.obj" "timer.obj" "uart.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

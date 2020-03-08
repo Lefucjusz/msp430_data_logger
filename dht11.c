@@ -57,7 +57,7 @@ static void dht11_get_data_frame(uint64_t* frame)
 		if(DHT11_IN_PORT & DHT11_PIN) //Read line state, if high...
 		{
 			*frame |= 1; //...one is being sent, store the value
-			timeout = DHT11_SYNCHRO_LOOP_TIMEOUT; //Set the synchronisation loop timeout, so that program won't get stuck in case of error
+			timeout = DHT11_SYNCHRO_LOOP_TIMEOUT; //Set the synchronization loop timeout, so that program won't get stuck in case of error
 			while((DHT11_IN_PORT & DHT11_PIN) && timeout) //This is very clever idea, enabling timings self-correcting on every one bit transmitted
 			{ //Loop waits for start of transmission signal, so that the next bit will be received perfectly on time
 				timeout--;

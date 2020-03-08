@@ -8,6 +8,8 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../dht11.c \
+../i2c.c \
+../l3gd20h.c \
 ../lcd.c \
 ../main.c \
 ../timer.c \
@@ -15,6 +17,8 @@ C_SRCS += \
 
 OBJS += \
 ./dht11.obj \
+./i2c.obj \
+./l3gd20h.obj \
 ./lcd.obj \
 ./main.obj \
 ./timer.obj \
@@ -22,6 +26,8 @@ OBJS += \
 
 C_DEPS += \
 ./dht11.d \
+./i2c.d \
+./l3gd20h.d \
 ./lcd.d \
 ./main.d \
 ./timer.d \
@@ -29,6 +35,8 @@ C_DEPS += \
 
 C_DEPS__QUOTED += \
 "dht11.d" \
+"i2c.d" \
+"l3gd20h.d" \
 "lcd.d" \
 "main.d" \
 "timer.d" \
@@ -36,6 +44,8 @@ C_DEPS__QUOTED += \
 
 OBJS__QUOTED += \
 "dht11.obj" \
+"i2c.obj" \
+"l3gd20h.obj" \
 "lcd.obj" \
 "main.obj" \
 "timer.obj" \
@@ -43,6 +53,8 @@ OBJS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../dht11.c" \
+"../i2c.c" \
+"../l3gd20h.c" \
 "../lcd.c" \
 "../main.c" \
 "../timer.c" \
