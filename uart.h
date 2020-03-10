@@ -12,10 +12,13 @@
 
 void usart1_init_9600(void);
 
-void usart1_putchar(char);
-void usart1_send_string(const char*);
+void usart1_putc(char);
+void usart1_puts(const char*);
 
-char usart1_getchar(void);
-void usart1_get_string(char*);
+char usart1_getc(void);
+void usart1_gets(char*);
+
+void usart1_put_s32(int32_t);
+
 
 #endif /* UART_H_ */

@@ -7,6 +7,7 @@ main.obj: C:/ti/ccsv6/ccs_base/msp430/include/in430.h
 main.obj: C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics.h
 main.obj: C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics_legacy_undefs.h
 main.obj: C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/stdint.h
+main.obj: ../bool.h
 main.obj: ../globals.h
 main.obj: ../dht11.h
 main.obj: ../uart.h
@@ -23,6 +24,7 @@ C:/ti/ccsv6/ccs_base/msp430/include/in430.h:
 C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics.h: 
 C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics_legacy_undefs.h: 
 C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/stdint.h: 
+../bool.h: 
 ../globals.h: 
 ../dht11.h: 
 ../uart.h: 

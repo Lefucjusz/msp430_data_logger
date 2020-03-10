@@ -1,6 +1,7 @@
 #include <msp430.h>
 #include <intrinsics.h>
 #include <stdint.h>
+#include "bool.h"
 #include "globals.h"
 #include "dht11.h"
 #include "uart.h"
@@ -10,11 +11,11 @@
 #include "wifi.h"
 /*
  *
- * TODO - WIFI, I2C timeouts, pressure sensor library
+ * TODO - WIFI, I2C timeouts, USART timeouts, LCD display all values
  *
  */
 
-volatile uint8_t timer_flag = 0;
+volatile BOOL timer_flag = FALSE;
 
 void set_mclk_8mhz(void)
 {
@@ -34,94 +35,40 @@ void led_init(void)
 void timer_callback(void)
 {
 	P5OUT ^= 0x02;
-	timer_flag = 1;
+	timer_flag = TRUE;
 }
-
-uint8_t whoami;
-uint16_t checksum;
-
-bmp280_t measurements;
-
-char rx_buffer[128];
 
 void main(void)
 {
-	dht11_t values;
-	uint8_t state = 0;
+	dht11_t dht_values;
+	bmp280_t bmp_values;
 
-    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+	uint8_t seconds = 0;
+
+	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	set_mclk_8mhz();
 
 	usart1_init_9600();
-
-	whoami = wifi_at_mode_start();
-
-	//while(1)
-	{
-		usart1_get_string(rx_buffer);
-		usart1_send_string(rx_buffer);
-	}
-while(1);
 	lcd_init();
 	led_init();
-	//timer_init(&timer_callback);
-
-	lcd_putchar(5, 20); //°
-
-//	i2c_init(0b1101011);
-//	i2c_start(WRITE);
-//	i2c_write_byte(0x0F);
-//	i2c_start(READ);
-//	whoami = i2c_read_byte(NACK);
-//	i2c_stop();
-//
-//	checksum = ((whoami == 0xD4) || (whoami == 0xD7));
-
 	bmp280_init();
+	timer_init(&timer_callback);
 
-
-	while(1)
-	{
-		measurements = bmp280_get_measurements();
-		__delay_cycles(DELAY_1S);
-	}
-
-    while(1)
+    while(TRUE)
     {
-    	if(timer_flag)
+    	if(timer_flag == TRUE)
     	{
-    		timer_flag = 0;
-    		values = dht11_get_measurements();
+    		timer_flag = FALSE;
+    		seconds++;
 
-			usart1_putchar(values.temperature/10 + 0x30);
-			usart1_putchar(values.temperature%10 + 0x30);
-			usart1_string("°C");
+    		if(seconds >= 5)
+    		{
+    			dht_values = dht11_get_measurements();
+    			bmp_values = bmp280_get_measurements();
 
-			usart1_string(" ");
-
-			usart1_putchar(values.humidity/10 + 0x30);
-			usart1_putchar(values.humidity%10 + 0x30);
-			//usart1_send_char('\n');
-			usart1_string("%\n");
-
-			if(state == 0)
-			{
-				lcd_putchar(3, values.temperature/10);
-				lcd_putchar(4, values.temperature%10);
-				lcd_putchar(6, 11); //C
-			}
-			else if(state == 2)
-			{
-				lcd_putchar(3, values.humidity/10);
-				lcd_putchar(4, values.humidity%10);
-				lcd_putchar(6, 15); //H
-			}
-
-			state++;
-			if(state >= 4)
-			{
-				state = 0;
-			}
+    			wifi_send_data_frame(dht_values, bmp_values);
+    			seconds = 0;
+    		}
     	}
     }
 }

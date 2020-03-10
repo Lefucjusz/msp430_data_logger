@@ -7,6 +7,7 @@
 
 #include "uart.h"
 #include <msp430.h>
+#include "globals.h"
 
 void usart1_init_9600(void)
 {
@@ -18,30 +19,29 @@ void usart1_init_9600(void)
 	U1BR1 = 0x00;                             //
 	U1MCTL = 0x4A;                            // Modulation
 	U1CTL &= ~SWRST;                          // Initialize USART state machine
-	//IE2 |= URXIE1;                            // Enable USART1 RX interrupt
 }
 
-void usart1_putchar(char byte)
+void usart1_putc(char byte)
 {
 	TXBUF1 = byte; //Load byte to be sent to buffer
 	while (!(IFG2 & UTXIFG1)); //Wait for transmission to complete
 }
 
-void usart1_send_string(const char* str)
+void usart1_puts(const char* str)
 {
 	while(*str)
 	{
-		usart1_putchar(*str++);
+		usart1_putc(*str++);
 	}
 }
 
-char usart1_getchar(void)
+char usart1_getc(void)
 {
 	while(!(IFG2 & URXIFG1));
 	return RXBUF1;
 }
 
-void usart1_get_string(char* buffer)
+void usart1_gets(char* buffer)
 {
 	uint8_t index = 0;
 	do
@@ -51,11 +51,24 @@ void usart1_get_string(char* buffer)
 	} while(buffer[index++] != '\r'); //Do it to first CR character
 
 	buffer[index-1] = '\0'; //Null-terminate on CR position
+	__delay_cycles(5*DELAY_1MS); //Delay 5ms for discarded CRLFs
 }
 
-//#pragma vector=USART1RX_VECTOR
-//__interrupt void usart1rx_isr(void) //RX interrupt handler
-//{
-//	TXBUF1 = RXBUF1; //Redirect input to output
-//	while (!(IFG2 & UTXIFG1));
-//}
+void usart1_put_s32(int32_t num) //Send signed 16-bit integer through UART
+{
+	if(num < 0) //Check if negative
+	{
+		usart1_putc('-'); //Send minus sign
+		num = -num; //Treat value as positive
+	}
+	usart1_putc((num/1000000000l) + 0x30); //Split num to digits and send as ASCII
+	usart1_putc(((num/100000000l) % 10) + 0x30);
+	usart1_putc(((num/10000000l) % 10) + 0x30);
+	usart1_putc(((num/1000000l) % 10) + 0x30);
+	usart1_putc(((num/100000l) % 10) + 0x30);
+	usart1_putc(((num/10000) % 10) + 0x30);
+	usart1_putc(((num/1000) % 10) + 0x30);
+	usart1_putc(((num/100) % 10) + 0x30);
+	usart1_putc(((num/10) % 10) + 0x30);
+	usart1_putc((num % 10) + 0x30);
+}
