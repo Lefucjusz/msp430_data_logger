@@ -16,7 +16,7 @@ const uint8_t lcd_char_map[] =
 	LCD_A+LCD_B+LCD_C+LCD_D+LCD_G,              // '3'
 	LCD_B+LCD_C+LCD_F+LCD_G,                    // '4' or 'y'
 	LCD_A+LCD_C+LCD_D+LCD_F+LCD_G,              // '5' or 'S'
-	LCD_A+LCD_C+LCD_D+LCD_E+LCD_F+LCD_G,        // '6' or 'b'
+	LCD_A+LCD_C+LCD_D+LCD_E+LCD_F+LCD_G,        // '6'
 	LCD_A+LCD_B+LCD_C,                          // '7'
 	LCD_A+LCD_B+LCD_C+LCD_D+LCD_E+LCD_F+LCD_G,  // '8' or 'B'
 	LCD_A+LCD_B+LCD_C+LCD_D+LCD_F+LCD_G,        // '9' or 'g'
@@ -30,7 +30,10 @@ const uint8_t lcd_char_map[] =
 	LCD_D+LCD_E+LCD_F,                          // 'L'
 	LCD_A+LCD_B+LCD_E+LCD_F+LCD_G,              // 'P'
 	LCD_B+LCD_C+LCD_D+LCD_E+LCD_F,              // 'U'
-	LCD_A+LCD_B+LCD_F+LCD_G						// '°'
+	LCD_A+LCD_B+LCD_F+LCD_G,					// '°'
+	LCD_D+LCD_E+LCD_F+LCD_G,					// 't'
+	LCD_C+LCD_D+LCD_E+LCD_F+LCD_G       		// 'b'
+
 };
 
 const uint8_t LCD_MAX_CHARS = (sizeof(lcd_char_map)/sizeof(uint8_t));

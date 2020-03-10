@@ -7,7 +7,7 @@
 #include "wifi.h"
 #include "uart.h"
 
-uint8_t wifi_send_data_frame(dht11_t dht11, bmp280_t bmp280)
+void wifi_send_data_frame(dht11_t dht11, bmp280_t bmp280)
 {
 	usart1_puts("GET /log?temp1="); //Send GET request
 	usart1_put_s32(dht11.temperature);

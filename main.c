@@ -11,7 +11,7 @@
 #include "wifi.h"
 /*
  *
- * TODO - WIFI, I2C timeouts, USART timeouts, LCD display all values
+ * TODO - WIFI, I2C timeouts, USART timeouts, LCD display connection
  *
  */
 
@@ -30,6 +30,7 @@ void set_mclk_8mhz(void)
 void led_init(void)
 {
 	P5DIR |= 0x02;
+	P5OUT &= ~0x02;
 }
 
 void timer_callback(void)
@@ -44,15 +45,21 @@ void main(void)
 	bmp280_t bmp_values;
 
 	uint8_t seconds = 0;
+	uint8_t display_content = 0;
 
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	set_mclk_8mhz();
 
-	usart1_init_9600();
+	__delay_cycles(DELAY_1S); //Wait for voltages to stabilize
+
+	usart1_init_38400();
 	lcd_init();
 	led_init();
 	bmp280_init();
 	timer_init(&timer_callback);
+
+	dht_values = dht11_get_measurements();
+	bmp_values = bmp280_get_measurements();
 
     while(TRUE)
     {
@@ -60,14 +67,55 @@ void main(void)
     	{
     		timer_flag = FALSE;
     		seconds++;
+    		display_content++;
 
-    		if(seconds >= 5)
+    		if(seconds >= 59)
     		{
     			dht_values = dht11_get_measurements();
-    			bmp_values = bmp280_get_measurements();
+    		    bmp_values = bmp280_get_measurements();
 
-    			wifi_send_data_frame(dht_values, bmp_values);
-    			seconds = 0;
+    		    wifi_send_data_frame(dht_values, bmp_values);
+    		    seconds = 0;
+    		}
+
+    		switch(display_content)
+    		{
+    			case 1:
+    	       		lcd_cls();
+    				lcd_putchar(1,21); //t
+					lcd_putchar(2,12); //d
+					lcd_special_char(LCD_COL3); //:
+					lcd_putchar(4, dht_values.temperature/10);
+					lcd_putchar(5, dht_values.temperature%10);
+    				break;
+    			case 3:
+    	       		lcd_cls();
+    				lcd_putchar(1,21); //t
+    				lcd_putchar(2,22); //b
+    				lcd_special_char(LCD_COL3); //:
+    				lcd_putchar(4, (bmp_values.temperature/100)/10);
+    				lcd_putchar(5, (bmp_values.temperature/100)%10);
+    				break;
+    			case 5:
+    	       		lcd_cls();
+    				lcd_putchar(2,15); //H
+    				lcd_special_char(LCD_COL3); //:
+    				lcd_putchar(4, dht_values.humidity/10);
+    				lcd_putchar(5, dht_values.humidity%10);
+    				break;
+    			case 7:
+    	       		lcd_cls();
+    				lcd_putchar(2,18); //P
+    				lcd_special_char(LCD_COL3 | LCD_DP7); //: and .
+    				lcd_putchar(3, bmp_values.pressure/100000);
+    				lcd_putchar(4, (bmp_values.pressure/10000)%10);
+    				lcd_putchar(5, (bmp_values.pressure/1000)%10);
+    			    lcd_putchar(6, (bmp_values.pressure/100)%10);
+    			    lcd_putchar(7, (bmp_values.pressure/10)%10);
+    			    break;
+    			case 8:
+    			    display_content = 0;
+    				break;
     		}
     	}
     }

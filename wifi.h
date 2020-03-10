@@ -16,6 +16,6 @@
 #define FAILURE FALSE
 #define SUCCESS TRUE
 
-uint8_t wifi_send_data_frame(dht11_t, bmp280_t);
+void wifi_send_data_frame(dht11_t, bmp280_t);
 
 #endif /* WIFI_H_ */

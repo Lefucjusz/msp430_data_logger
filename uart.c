@@ -9,15 +9,15 @@
 #include <msp430.h>
 #include "globals.h"
 
-void usart1_init_9600(void)
+void usart1_init_38400(void)
 {
-	P4SEL |= 0x03;                            // P4.0,1 = USART1 TXD, RXD
-	ME2 |= UTXE1 | URXE1;                     // Enable USART1 TXD
+	P4SEL |= (1<<0) | (1<<1);                 // P4.0,1 = USART1 TXD, RXD
+	ME2 |= UTXE1 | URXE1;                     // Enable USART1 TXD, RXD
 	U1CTL |= CHAR;                            // 8-bit character
-	U1TCTL |= SSEL0;                          // UCLK = ACLK
-	U1BR0 = 0x03;                             // 32k/9600 - 3.41
+	U1TCTL |= SSEL1;                          // UCLK = ACLK
+	U1BR0 = 0xD0;                             // 2*(121+1)*32768/38400 = 208.21
 	U1BR1 = 0x00;                             //
-	U1MCTL = 0x4A;                            // Modulation
+	U1MCTL = 0x84;                            // Modulation
 	U1CTL &= ~SWRST;                          // Initialize USART state machine
 }
 

@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-void usart1_init_9600(void);
+void usart1_init_38400(void);
 
 void usart1_putc(char);
 void usart1_puts(const char*);
