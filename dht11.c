@@ -66,7 +66,7 @@ static void dht11_get_data_frame(uint64_t* frame)
 	}
 }
 
-static uint8_t dht11_checksum(uint64_t frame) //Procedure is described in DHT11 datasheet
+static uint8_t dht11_check_checksum(uint64_t frame) //Procedure is described in DHT11 datasheet
 {
 	uint8_t a, b, c, d, e;
 	a = (frame >> 32) & 0xFF;
@@ -84,7 +84,7 @@ dht11_t dht11_get_measurements(void)
 	dht11_t measurements;
 	dht11_get_data_frame(&frame);
 
-	if(!dht11_checksum(frame)) //If checksum is incorrect - report error
+	if(!dht11_check_checksum(frame)) //If checksum is incorrect - report error
 	{
 		measurements.humidity = DHT11_ERROR;
 		measurements.temperature = DHT11_ERROR;

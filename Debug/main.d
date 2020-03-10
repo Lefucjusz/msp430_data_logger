@@ -13,9 +13,8 @@ main.obj: ../uart.h
 main.obj: ../lcd.h
 main.obj: C:/ti/ccsv6/ccs_base/msp430/include/msp430xG46x.h
 main.obj: ../timer.h
-main.obj: ../i2c.h
-main.obj: ../bool.h
-main.obj: ../l3gd20h.h
+main.obj: ../bmp280.h
+main.obj: ../wifi.h
 
 ../main.c: 
 C:/ti/ccsv6/ccs_base/msp430/include/msp430.h: 
@@ -30,6 +29,5 @@ C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/stdint.h:
 ../lcd.h: 
 C:/ti/ccsv6/ccs_base/msp430/include/msp430xG46x.h: 
 ../timer.h: 
-../i2c.h: 
-../bool.h: 
-../l3gd20h.h: 
+../bmp280.h: 
+../wifi.h: 

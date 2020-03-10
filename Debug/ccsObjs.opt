@@ -1,1 +1,1 @@
-"./dht11.obj" "./i2c.obj" "./l3gd20h.obj" "./lcd.obj" "./main.obj" "./timer.obj" "./uart.obj" "../lnk_msp430fg4618.cmd" -llibc.a 
+"./bmp280.obj" "./dht11.obj" "./i2c.obj" "./lcd.obj" "./main.obj" "./timer.obj" "./uart.obj" "./wifi.obj" "../lnk_msp430fg4618.cmd" -llibc.a 

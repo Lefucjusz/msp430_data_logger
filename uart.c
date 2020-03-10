@@ -18,7 +18,7 @@ void usart1_init_9600(void)
 	U1BR1 = 0x00;                             //
 	U1MCTL = 0x4A;                            // Modulation
 	U1CTL &= ~SWRST;                          // Initialize USART state machine
-	IE2 |= URXIE1;                            // Enable USART1 RX interrupt
+	//IE2 |= URXIE1;                            // Enable USART1 RX interrupt
 }
 
 void usart1_putchar(char byte)
@@ -27,7 +27,7 @@ void usart1_putchar(char byte)
 	while (!(IFG2 & UTXIFG1)); //Wait for transmission to complete
 }
 
-void usart1_string(const char* str)
+void usart1_send_string(const char* str)
 {
 	while(*str)
 	{
@@ -35,9 +35,27 @@ void usart1_string(const char* str)
 	}
 }
 
-#pragma vector=USART1RX_VECTOR
-__interrupt void usart1rx_isr(void) //RX interrupt handler
+char usart1_getchar(void)
 {
-	TXBUF1 = RXBUF1; //Redirect input to output
-	while (!(IFG2 & UTXIFG1));
+	while(!(IFG2 & URXIFG1));
+	return RXBUF1;
 }
+
+void usart1_get_string(char* buffer)
+{
+	uint8_t index = 0;
+	do
+	{
+		while(!(IFG2 & URXIFG1)); //Wait for the character to come
+		buffer[index] = RXBUF1; //Store character
+	} while(buffer[index++] != '\r'); //Do it to first CR character
+
+	buffer[index-1] = '\0'; //Null-terminate on CR position
+}
+
+//#pragma vector=USART1RX_VECTOR
+//__interrupt void usart1rx_isr(void) //RX interrupt handler
+//{
+//	TXBUF1 = RXBUF1; //Redirect input to output
+//	while (!(IFG2 & UTXIFG1));
+//}

@@ -10,13 +10,14 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./bmp280.obj" \
 "./dht11.obj" \
 "./i2c.obj" \
-"./l3gd20h.obj" \
 "./lcd.obj" \
 "./main.obj" \
 "./timer.obj" \
 "./uart.obj" \
+"./wifi.obj" \
 "../lnk_msp430fg4618.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -158,8 +159,8 @@ msp430_data_logger.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "dht11.d" "i2c.d" "l3gd20h.d" "lcd.d" "main.d" "timer.d" "uart.d" 
-	-$(RM) "dht11.obj" "i2c.obj" "l3gd20h.obj" "lcd.obj" "main.obj" "timer.obj" "uart.obj" 
+	-$(RM) "bmp280.d" "dht11.d" "i2c.d" "lcd.d" "main.d" "timer.d" "uart.d" "wifi.d" 
+	-$(RM) "bmp280.obj" "dht11.obj" "i2c.obj" "lcd.obj" "main.obj" "timer.obj" "uart.obj" "wifi.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

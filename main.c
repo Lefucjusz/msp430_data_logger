@@ -6,13 +6,11 @@
 #include "uart.h"
 #include "lcd.h"
 #include "timer.h"
-#include "i2c.h"
-#include "l3gd20h.h"
-
+#include "bmp280.h"
+#include "wifi.h"
 /*
  *
- * TODO - real time clock for datagrams timestamps
- * TODO - IMU library, I2C library
+ * TODO - WIFI, I2C timeouts, pressure sensor library
  *
  */
 
@@ -41,7 +39,10 @@ void timer_callback(void)
 
 uint8_t whoami;
 uint16_t checksum;
-l3gd20h_t measurements;
+
+bmp280_t measurements;
+
+char rx_buffer[128];
 
 void main(void)
 {
@@ -52,9 +53,18 @@ void main(void)
 	set_mclk_8mhz();
 
 	usart1_init_9600();
+
+	whoami = wifi_at_mode_start();
+
+	//while(1)
+	{
+		usart1_get_string(rx_buffer);
+		usart1_send_string(rx_buffer);
+	}
+while(1);
 	lcd_init();
 	led_init();
-	timer_init(&timer_callback);
+	//timer_init(&timer_callback);
 
 	lcd_putchar(5, 20); //°
 
@@ -67,55 +77,13 @@ void main(void)
 //
 //	checksum = ((whoami == 0xD4) || (whoami == 0xD7));
 
-	l3gd20h_init();
+	bmp280_init();
+
 
 	while(1)
 	{
-		measurements = l3gd20h_get_measurements();
-
-		//usart1_string("\nx: ");
-		if(measurements.x < 0)
-		{
-			usart1_putchar('-');
-			measurements.x = -measurements.x;
-		}
-		usart1_putchar((measurements.x / 10000) + 0x30);
-		usart1_putchar(((measurements.x / 1000) % 10) + 0x30);
-		usart1_putchar(((measurements.x / 100) % 10) + 0x30);
-		usart1_putchar(((measurements.x / 10) % 10) + 0x30);
-		usart1_putchar((measurements.x  % 10) + 0x30);
-
-		usart1_putchar(' ');
-
-		//usart1_string(" y: ");
-		if(measurements.y < 0)
-		{
-			usart1_putchar('-');
-			measurements.y = -measurements.y;
-		}
-		usart1_putchar((measurements.y / 10000) + 0x30);
-		usart1_putchar(((measurements.y / 1000) % 10) + 0x30);
-		usart1_putchar(((measurements.y / 100) % 10) + 0x30);
-		usart1_putchar(((measurements.y / 10) % 10) + 0x30);
-		usart1_putchar((measurements.y  % 10) + 0x30);
-
-		usart1_putchar(' ');
-
-		//usart1_string(" z: ");
-		if(measurements.z < 0)
-		{
-			usart1_putchar('-');
-			measurements.z = -measurements.z;
-		}
-		usart1_putchar((measurements.z / 10000) + 0x30);
-		usart1_putchar(((measurements.z / 1000) % 10) + 0x30);
-		usart1_putchar(((measurements.z / 100) % 10) + 0x30);
-		usart1_putchar(((measurements.z / 10) % 10) + 0x30);
-		usart1_putchar((measurements.z % 10) + 0x30);
-
-		usart1_putchar('\n');
-
-		__delay_cycles(DELAY_1MS*100);
+		measurements = bmp280_get_measurements();
+		__delay_cycles(DELAY_1S);
 	}
 
     while(1)

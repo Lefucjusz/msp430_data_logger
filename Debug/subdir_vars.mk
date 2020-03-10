@@ -7,57 +7,63 @@ CMD_SRCS += \
 ../lnk_msp430fg4618.cmd 
 
 C_SRCS += \
+../bmp280.c \
 ../dht11.c \
 ../i2c.c \
-../l3gd20h.c \
 ../lcd.c \
 ../main.c \
 ../timer.c \
-../uart.c 
+../uart.c \
+../wifi.c 
 
 OBJS += \
+./bmp280.obj \
 ./dht11.obj \
 ./i2c.obj \
-./l3gd20h.obj \
 ./lcd.obj \
 ./main.obj \
 ./timer.obj \
-./uart.obj 
+./uart.obj \
+./wifi.obj 
 
 C_DEPS += \
+./bmp280.d \
 ./dht11.d \
 ./i2c.d \
-./l3gd20h.d \
 ./lcd.d \
 ./main.d \
 ./timer.d \
-./uart.d 
+./uart.d \
+./wifi.d 
 
 C_DEPS__QUOTED += \
+"bmp280.d" \
 "dht11.d" \
 "i2c.d" \
-"l3gd20h.d" \
 "lcd.d" \
 "main.d" \
 "timer.d" \
-"uart.d" 
+"uart.d" \
+"wifi.d" 
 
 OBJS__QUOTED += \
+"bmp280.obj" \
 "dht11.obj" \
 "i2c.obj" \
-"l3gd20h.obj" \
 "lcd.obj" \
 "main.obj" \
 "timer.obj" \
-"uart.obj" 
+"uart.obj" \
+"wifi.obj" 
 
 C_SRCS__QUOTED += \
+"../bmp280.c" \
 "../dht11.c" \
 "../i2c.c" \
-"../l3gd20h.c" \
 "../lcd.c" \
 "../main.c" \
 "../timer.c" \
-"../uart.c" 
+"../uart.c" \
+"../wifi.c" 
 
 
