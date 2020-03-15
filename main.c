@@ -1,19 +1,14 @@
-#include <msp430.h>
-#include <intrinsics.h>
-#include <stdint.h>
+#include <msp430fg4618.h>
 #include "bool.h"
 #include "globals.h"
 #include "dht11.h"
-#include "uart.h"
 #include "lcd.h"
 #include "timer.h"
 #include "bmp280.h"
+#include "uart.h"
 #include "wifi.h"
-/*
- *
- * TODO - WIFI, I2C timeouts, USART timeouts, LCD display connection
- *
- */
+
+#define DATA_TRANSFER_INTERVAL 60 //seconds
 
 volatile BOOL timer_flag = FALSE;
 
@@ -65,23 +60,25 @@ void main(void)
     {
     	if(timer_flag == TRUE)
     	{
-    		timer_flag = FALSE;
-    		seconds++;
-    		display_content++;
+    		timer_flag = FALSE; //Clear flag
+    		seconds++; //Another second elapsed
+    		display_content++; //Change display content
 
-    		if(seconds >= 59)
+    		if(seconds >= (DATA_TRANSFER_INTERVAL - 1)) //Send data to server
     		{
+    			lcd_symbol(LCD_SYM_TX);
     			dht_values = dht11_get_measurements();
     		    bmp_values = bmp280_get_measurements();
-
     		    wifi_send_data_frame(dht_values, bmp_values);
-    		    seconds = 0;
+    		    __delay_cycles(100*DELAY_1MS);
+    			lcd_symbol(LCD_SYM_OFF);
+    			seconds = 0;
     		}
 
-    		switch(display_content)
+    		switch(display_content) //Displaying content on LCD
     		{
     			case 1:
-    	       		lcd_cls();
+    	       		lcd_clear_digits();
     				lcd_putchar(1,21); //t
 					lcd_putchar(2,12); //d
 					lcd_special_char(LCD_COL3); //:
@@ -89,7 +86,7 @@ void main(void)
 					lcd_putchar(5, dht_values.temperature%10);
     				break;
     			case 3:
-    	       		lcd_cls();
+    				lcd_clear_digits();
     				lcd_putchar(1,21); //t
     				lcd_putchar(2,22); //b
     				lcd_special_char(LCD_COL3); //:
@@ -97,14 +94,14 @@ void main(void)
     				lcd_putchar(5, (bmp_values.temperature/100)%10);
     				break;
     			case 5:
-    	       		lcd_cls();
+    				lcd_clear_digits();
     				lcd_putchar(2,15); //H
     				lcd_special_char(LCD_COL3); //:
     				lcd_putchar(4, dht_values.humidity/10);
     				lcd_putchar(5, dht_values.humidity%10);
     				break;
     			case 7:
-    	       		lcd_cls();
+    				lcd_clear_digits();
     				lcd_putchar(2,18); //P
     				lcd_special_char(LCD_COL3 | LCD_DP7); //: and .
     				lcd_putchar(3, bmp_values.pressure/100000);

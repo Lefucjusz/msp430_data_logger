@@ -9,12 +9,8 @@
 #define WIFI_H_
 
 #include <stdint.h>
-#include "bool.h"
 #include "dht11.h"
 #include "bmp280.h"
-
-#define FAILURE FALSE
-#define SUCCESS TRUE
 
 void wifi_send_data_frame(dht11_t, bmp280_t);
 

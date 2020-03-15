@@ -28,7 +28,8 @@
 
 extern const uint8_t LCD_MAX_CHARS;
 
-void lcd_cls(void); //Clear LCD
+void lcd_clear_digits(void);
+void lcd_clear_all(void); //Clear LCD
 void lcd_init(void); //Initialize LCD_A
 void lcd_show_all(void); //Display all segments on LCD
 

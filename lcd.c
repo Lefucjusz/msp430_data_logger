@@ -38,7 +38,16 @@ const uint8_t lcd_char_map[] =
 
 const uint8_t LCD_MAX_CHARS = (sizeof(lcd_char_map)/sizeof(uint8_t));
 
-void lcd_cls(void) //Clear LCD
+void lcd_clear_digits(void)
+{
+	uint8_t i;
+	for(i = LCD_MEM_OFFSET; i < LCD_MEM_OFFSET + LCD_NUM_DIGITS; i++)
+	{
+		LCDMEM[i] &= ~lcd_char_map[8];
+	}
+}
+
+void lcd_clear_all(void) //Clear LCD
 {
 	uint8_t i;
 	for(i = LCD_MEM_OFFSET; i < (LCD_MEM_OFFSET+LCD_MEM_LOC);  i++)
@@ -49,7 +58,7 @@ void lcd_cls(void) //Clear LCD
 
 void lcd_init(void) //Initialize LCD_A
 {
-  lcd_cls(); //Clear LCD memory
+  lcd_clear_all(); //Clear LCD memory
 
   //Configure COM0-COM3 and R03-R33 pins
   P5SEL |= (BIT4 | BIT3 | BIT2);
@@ -68,7 +77,7 @@ void lcd_show_all(void) //Display all segments on LCD
 	uint8_t i;
 	for(i = LCD_MEM_OFFSET; i < (LCD_MEM_OFFSET+LCD_MEM_LOC); i++)
 	{
-		LCDMEM[i] = 0xff;
+		LCDMEM[i] = 0xFF;
 	}
 }
 
